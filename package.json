@@ -1,0 +1,26 @@
+{
+  "name": "niels-van-den-broeck",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "serve:api": "nodemon src/server.js",
+    "test": "jest --config ./jest.config.json --runInBand",
+    "test:watch": "npm run test -- --watch"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "fastify": "^3.3.0",
+    "mongodb": "^3.6.1",
+    "mongoose": "^5.10.2",
+    "nodemon": "^2.0.4",
+    "object-mapper": "^6.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.22.0",
+    "jest": "^26.4.2"
+  }
+}
