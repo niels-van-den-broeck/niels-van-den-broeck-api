@@ -1,4 +1,12 @@
 {
-  "testRegex": "((\\.|/*.)(spec))\\.js?$",
-  "testEnvironment": "node"
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/?(*.)+(spec).[jt]s"
+  ],
+  "testPathIgnorePatterns": ["dist"],
+  "watchPlugins": [
+    "jest-watch-typeahead/filename",
+    "jest-watch-typeahead/testname"
+  ]
 }

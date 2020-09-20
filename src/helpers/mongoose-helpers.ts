@@ -1,12 +1,13 @@
-const mongoose = require('mongoose');
+import mongoose, { Model } from 'mongoose';
 
-function isMongooseModel(item) {
-  return typeof item === 'function' && item.name === 'model';
+function getCollectionName(item: mongoose.Model<any> | string): string {
+  if (typeof item === 'function' && item.collection) {
+    return item.collection.collectionName;
+  } else return item as string;
 }
 
 function connect() {
   mongoose.models = {};
-  mongoose.modelSchemas = {};
 
   return mongoose.connect('mongodb://localhost:27017/niels-van-den-broeck-test', {
     useNewUrlParser: true,
@@ -20,13 +21,14 @@ function dropDb() {
   return mongoose.connection.dropDatabase();
 }
 
-function dropCollection(item) {
+function dropCollection(item: string | Model<any>) {
   return new Promise((resolve, reject) => {
-    const collectionName = isMongooseModel(item) ? item.collection.collectionName : item;
+
+    const collectionName = getCollectionName(item);
     return mongoose.connection.db.collection(collectionName, { strict: true }, (err, result) => {
       if (err) return resolve();
 
-      return result.removeMany((e) => (e ? reject(e) : resolve()));
+      return result.deleteMany((e: unknown) => (e ? reject(e) : resolve()));
     });
   });
 }
@@ -41,7 +43,7 @@ async function dropAllCollections() {
   );
 }
 
-function dropCollections(collections) {
+function dropCollections(collections: [string]) {
   return Promise.all(collections.map((item) => dropCollection(item)));
 }
 
@@ -49,7 +51,7 @@ function disconnect() {
   return mongoose.disconnect();
 }
 
-module.exports = {
+export default {
   connect,
   disconnect,
   dropDb,
