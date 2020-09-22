@@ -1,8 +1,8 @@
 import fp from 'fastify-plugin';
-import { FastifyPlugin } from 'fastify';
+import { FastifyPluginCallback } from 'fastify';
 import { Boom } from '@hapi/boom';
 
-const fastifyErrorPage: FastifyPlugin = (fastify, options, next) => {
+const fastifyErrorPage: FastifyPluginCallback = (fastify, options, next) => {
   fastify.setErrorHandler(function errorHandler(error, request, reply) {
     if (error instanceof Boom) {
       reply
