@@ -1,6 +1,6 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose, { MongooseModel } from 'mongoose';
 
-function getCollectionName(item: mongoose.Model<any> | string): string {
+function getCollectionName(item: mongoose.MongooseModel<any> | string): string {
   if (typeof item === 'function' && item.collection) {
     return item.collection.collectionName;
   } else return item as string;
@@ -21,7 +21,7 @@ function dropDb() {
   return mongoose.connection.dropDatabase();
 }
 
-function dropCollection(item: string | Model<any>) {
+function dropCollection(item: string | MongooseModel<any>) {
   return new Promise((resolve, reject) => {
     const collectionName = getCollectionName(item);
     return mongoose.connection.db.collection(collectionName, { strict: true }, (err, result) => {

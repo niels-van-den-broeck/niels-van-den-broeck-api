@@ -1,9 +1,17 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
-export type BlogPost = Document & {
+import { MongooseModel } from '../@types/UtilityTypes';
+
+export type BlogPost = {
   title: string;
   post: string;
   author: string;
+};
+
+type BlogPostDocument = BlogPost & Document;
+
+type BlogPostModel = MongooseModel<BlogPostDocument> & {
+  new (document: BlogPost): BlogPostDocument;
 };
 
 const schema = new Schema({
@@ -12,4 +20,4 @@ const schema = new Schema({
   author: String,
 });
 
-export default mongoose.model<BlogPost, Model<BlogPost>>('BlogPosts', schema);
+export default mongoose.model<BlogPostDocument, BlogPostModel>('BlogPosts', schema);

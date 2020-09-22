@@ -14,7 +14,7 @@ type PostBody = {
   post: string;
 };
 
-const registerRoute: RouteRegistration = server => {
+const registerRoute: RouteRegistration = (server) => {
   server.post<{
     Headers: Headers;
     Body: PostBody;
@@ -68,7 +68,11 @@ const registerRoute: RouteRegistration = server => {
       const { name } = req.user;
       const { title, post } = req.body;
 
-      const bp = new BlogPosts({ title, post, author: name });
+      const bp = new BlogPosts({
+        title,
+        post,
+        author: name,
+      });
 
       await bp.save();
 
