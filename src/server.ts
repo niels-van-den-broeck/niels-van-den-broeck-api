@@ -2,7 +2,6 @@ import dotenv from 'dotenv'
 dotenv.config();
 
 import mongoose from 'mongoose';
-import admin, { ServiceAccount } from 'firebase-admin';
 
 import buildApp from './app';
 
@@ -19,17 +18,6 @@ async function start() {
 
     try {
       await server.listen(3001);
-      
-      const serviceAcc = {
-        projectId: config.FIREBASE_PROJECT_ID,
-        clientEmail: config.FIREBASE_CLIENT_EMAIL,
-        privateKey: config.FIREBASE_PRIVATE_KEY,
-      }
-
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAcc as ServiceAccount),
-        databaseURL: process.env.FIREBASE_DB_URI,
-      });
     } catch (err) {
       server.log.error(err);
       db.close();

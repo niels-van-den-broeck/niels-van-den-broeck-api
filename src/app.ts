@@ -1,9 +1,20 @@
 import fastify, { FastifyServerOptions } from 'fastify';
 import corsPlugin from 'fastify-cors';
+import { auth } from 'firebase-admin';
 import boomPlugin from './plugins/fastify-boom';
 import registerV1Routes from './api/routes/v1';
 import Joi from 'joi';
 import Boom from '@hapi/boom';
+import addFirebaseAuth from './decorators/fastify-firebase-auth';
+
+/**
+ * Centralized declaration for all additional request params.
+ */
+declare module 'fastify' {
+  interface FastifyRequest {
+    user: auth.DecodedIdToken;
+  }
+}
 
 export default function buildApp(opts?: FastifyServerOptions) {
   const server = fastify(opts);
@@ -13,8 +24,9 @@ export default function buildApp(opts?: FastifyServerOptions) {
   });
 
   server.register(boomPlugin);
-
   server.register(registerV1Routes, { prefix: '/api/v1' });
+
+  addFirebaseAuth(server);
 
   // TODO: Check out how to fix typings for this...
   // TODO: details don't get shown in error payloads ...
