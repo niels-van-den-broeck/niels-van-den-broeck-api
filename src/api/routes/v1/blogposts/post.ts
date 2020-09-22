@@ -14,7 +14,7 @@ type PostBody = {
   post: string;
 };
 
-const registerRoute: RouteRegistration = (server) => {
+const registerRoute: RouteRegistration = server => {
   server.post<{
     Headers: Headers;
     Body: PostBody;

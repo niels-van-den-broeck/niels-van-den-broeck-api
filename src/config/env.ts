@@ -1,11 +1,11 @@
 export interface Config {
-  MONGO_URI: string,
-  FIREBASE_SERVICE_ACCOUNT: string,
-  FIREBASE_DB_URI: string,
-  FIREBASE_PROJECT_ID: string,
-  FIREBASE_CLIENT_EMAIL: string,
-  FIREBASE_PRIVATE_KEY: string,
-};
+  MONGO_URI: string;
+  FIREBASE_SERVICE_ACCOUNT: string;
+  FIREBASE_DB_URI: string;
+  FIREBASE_PROJECT_ID: string;
+  FIREBASE_CLIENT_EMAIL: string;
+  FIREBASE_PRIVATE_KEY: string;
+}
 
 function getConfig(): Config {
   return {

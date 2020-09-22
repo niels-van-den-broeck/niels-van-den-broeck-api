@@ -38,18 +38,18 @@ export default function buildApp(opts?: FastifyServerOptions) {
       const { error } = result;
 
       if (error) {
-          const details = error.details.map(message => {
-              return {
-                  key: message.path.join('.'),
-                  message: message.message,
-              };
-          });
-
-          const e = Boom.badRequest('One or more validation failed', details);
-
+        const details = error.details.map(message => {
           return {
-            error: e,
+            key: message.path.join('.'),
+            message: message.message,
           };
+        });
+
+        const e = Boom.badRequest('One or more validation failed', details);
+
+        return {
+          error: e,
+        };
       } else {
         return result;
       }

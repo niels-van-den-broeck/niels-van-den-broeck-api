@@ -20,14 +20,14 @@ describe('POST /api/v1/blogposts', () => {
       title: 'A whole new world',
       post: '<h2>A brand new place ewksdjfojasdfnkj<h2>',
       ...params,
-    }
+    };
   }
 
   function act(blogPost = createBlogPost()) {
     return app.inject({
       method: 'POST',
       url: '/api/v1/blogposts',
-      payload: blogPost
+      payload: blogPost,
     });
   }
 
@@ -52,23 +52,29 @@ describe('POST /api/v1/blogposts', () => {
       const response = await act();
       const body = response.json();
 
-      const stored = await BlogPosts.findById(body.id).lean().exec()
+      const stored = await BlogPosts.findById(body.id)
+        .lean()
+        .exec();
 
-      expect(stored).toEqual(expect.objectContaining({
-        _id: new ObjectId(body.id),
-        title: body.title,
-        post: body.post,
-      }));
+      expect(stored).toEqual(
+        expect.objectContaining({
+          _id: new ObjectId(body.id),
+          title: body.title,
+          post: body.post,
+        }),
+      );
     });
   });
 
   describe('HTTP 1.1/400 Bad Request', () => {
     test('it returns the status when title is missing', async () => {
-      const response = await act(createBlogPost({
-        title: null,
-      }));
+      const response = await act(
+        createBlogPost({
+          title: null,
+        }),
+      );
       const body = response.json();
-      
+
       expect(body).toEqual({
         statusCode: 400,
         error: 'Bad Request',
@@ -77,11 +83,13 @@ describe('POST /api/v1/blogposts', () => {
     });
 
     test('it returns the status when post is missing', async () => {
-      const response = await act(createBlogPost({
-        post: null,
-      }));
+      const response = await act(
+        createBlogPost({
+          post: null,
+        }),
+      );
       const body = response.json();
-      
+
       expect(body).toEqual({
         statusCode: 400,
         error: 'Bad Request',

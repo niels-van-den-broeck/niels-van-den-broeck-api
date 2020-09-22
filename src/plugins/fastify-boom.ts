@@ -9,11 +9,11 @@ const fastifyErrorPage: FastifyPluginCallback = (fastify, options, next) => {
         .code(error.output.statusCode)
         .type('application/json')
         .headers(error.output.headers)
-        .send(error.output.payload)
-    } else reply.send(error || new Error(`Got non-error: ${error}`))
-  })
+        .send(error.output.payload);
+    } else reply.send(error || new Error(`Got non-error: ${error}`));
+  });
 
-  next()
-}
+  next();
+};
 
 export default fp(fastifyErrorPage);

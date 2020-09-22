@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 dotenv.config();
 
 import mongoose from 'mongoose';
@@ -10,7 +10,7 @@ import config from './config/env';
 /**
  * starts the server once connected to mongodb.
  */
-async function start() {  
+async function start() {
   const server = buildApp({ logger: true });
 
   mongoose.connection.once('open', async (mongoError, db) => {
@@ -25,7 +25,7 @@ async function start() {
     }
   });
 
-  mongoose.connection.on('error', (err) => {
+  mongoose.connection.on('error', err => {
     if (err.toString().indexOf('ECONNREFUSED') >= 0) {
       server.log.error('mongoose could not connect');
       process.exit(1);

@@ -1,10 +1,10 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export type BlogPost = Document & {
-  title: string,
-  post: string,
-  author: string,
-}
+  title: string;
+  post: string;
+  author: string;
+};
 
 const schema = new Schema({
   title: String,

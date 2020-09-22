@@ -23,7 +23,6 @@ function dropDb() {
 
 function dropCollection(item: string | Model<any>) {
   return new Promise((resolve, reject) => {
-
     const collectionName = getCollectionName(item);
     return mongoose.connection.db.collection(collectionName, { strict: true }, (err, result) => {
       if (err) return resolve();
@@ -38,13 +37,13 @@ async function dropAllCollections() {
 
   return Promise.all(
     collections
-      .filter((x) => x.name.indexOf('system.') === -1)
-      .map((collection) => dropCollection(collection.name)),
+      .filter(x => x.name.indexOf('system.') === -1)
+      .map(collection => dropCollection(collection.name)),
   );
 }
 
 function dropCollections(collections: [string]) {
-  return Promise.all(collections.map((item) => dropCollection(item)));
+  return Promise.all(collections.map(item => dropCollection(item)));
 }
 
 function disconnect() {
