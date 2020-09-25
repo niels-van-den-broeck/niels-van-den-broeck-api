@@ -4,20 +4,22 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "serve:api": "nodemon",
+    "serve": "nodemon",
     "test": "jest --config ./jest.config.json --runInBand",
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
     "@hapi/boom": "^9.1.0",
     "@types/express": "^4.17.8",
+    "@types/pino": "^6.3.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "joi": "^17.2.1",
     "mongodb": "^3.6.1",
     "mongoose": "^5.10.2",
     "nodemon": "^2.0.4",
-    "object-mapper": "^6.2.0"
+    "pino": "^6.6.1",
+    "pino-pretty": "^4.2.1"
   },
   "devDependencies": {
     "@types/mongoose": "^5.7.36",

@@ -4,8 +4,9 @@ dotenv.config();
 import mongoose from 'mongoose';
 
 import buildApp from './app';
-
 import config from './config/env';
+
+import logger from './core/logger';
 
 /**
  * starts the server once connected to mongodb.
@@ -17,7 +18,8 @@ async function start() {
     if (mongoError) throw mongoError;
 
     try {
-      await server.listen(3001);
+      await server.listen(config.PORT);
+      logger.info(`Server running on port: ${config.PORT}`);
     } catch (err) {
       db.close();
       process.exit(1);
