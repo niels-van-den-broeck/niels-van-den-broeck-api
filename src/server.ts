@@ -26,8 +26,9 @@ async function start() {
     }
   });
 
-  mongoose.connection.on('error', err => {
+  mongoose.connection.on('error', (err) => {
     if (err.toString().indexOf('ECONNREFUSED') >= 0) {
+      logger.info('mongo connection error', err);
       process.exit(1);
     }
   });
