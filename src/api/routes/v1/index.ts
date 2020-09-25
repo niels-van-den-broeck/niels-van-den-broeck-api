@@ -1,7 +1,7 @@
 import registerBlogPostRoutes from './blogposts';
 import { RouteRegistration } from '../../../@types/RouteRegistrationHandler';
 
-const registerRoutes: RouteRegistration = (router) => {
+const registerRoutes: RouteRegistration = router => {
   registerBlogPostRoutes(router);
 };
 

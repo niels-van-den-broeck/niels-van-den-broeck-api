@@ -1,5 +1,3 @@
 import buildApp from '../../../../app';
 
-describe('GET /api/v1/blogposts', () => {
- 
-});
+describe('GET /api/v1/blogposts', () => {});
