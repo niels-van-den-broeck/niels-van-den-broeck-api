@@ -1,9 +1,8 @@
 import registerBlogPostRoutes from './blogposts';
-import { FastifyPluginCallback } from 'fastify';
+import { RouteRegistration } from '../../../@types/RouteRegistrationHandler';
 
-const registerRoutes: FastifyPluginCallback = (server, opts, done) => {
-  registerBlogPostRoutes(server);
-  done();
+const registerRoutes: RouteRegistration = (router) => {
+  registerBlogPostRoutes(router);
 };
 
 export default registerRoutes;

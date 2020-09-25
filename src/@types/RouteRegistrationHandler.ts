@@ -1,5 +1,5 @@
-import { FastifyInstance } from 'fastify';
+import { Router } from "express";
 
 export type RouteRegistration = {
-  (router: FastifyInstance): void;
+  (router: Router): void;
 };

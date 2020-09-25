@@ -11,7 +11,7 @@ import config from './config/env';
  * starts the server once connected to mongodb.
  */
 async function start() {
-  const server = buildApp({ logger: true });
+  const server = buildApp();
 
   mongoose.connection.once('open', async (mongoError, db) => {
     if (mongoError) throw mongoError;
@@ -19,7 +19,6 @@ async function start() {
     try {
       await server.listen(3001);
     } catch (err) {
-      server.log.error(err);
       db.close();
       process.exit(1);
     }
@@ -27,7 +26,6 @@ async function start() {
 
   mongoose.connection.on('error', err => {
     if (err.toString().indexOf('ECONNREFUSED') >= 0) {
-      server.log.error('mongoose could not connect');
       process.exit(1);
     }
   });
