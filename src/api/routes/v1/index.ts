@@ -1,9 +1,7 @@
-import registerBlogPostRoutes from './blogposts';
 import registerUserRoutes from './user';
 import { RouteRegistration } from '../../../@types/RouteRegistrationHandler';
 
-const registerRoutes: RouteRegistration = router => {
-  registerBlogPostRoutes(router);
+const registerRoutes: RouteRegistration = (router) => {
   registerUserRoutes(router);
 };
 
