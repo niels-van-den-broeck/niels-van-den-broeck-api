@@ -1,6 +1,8 @@
 import request from 'supertest';
 
 import buildApp from '../../../../app';
+import mongooseHelpers from '../../../../helpers/mongoose-helpers';
+import User from '../../../../models/User';
 
 type RegisterUserResouce = {
   email: string;
@@ -9,7 +11,30 @@ type RegisterUserResouce = {
 };
 
 describe('POST /api/v1/user/register', () => {
+  const EXISTING_USER_EMAIL = 'existing@test.be';
+
   const app = buildApp();
+
+  beforeAll(async () => {
+    await mongooseHelpers.connect();
+  });
+
+  beforeEach(async () => {
+    await mongooseHelpers.dropCollection(User);
+  });
+
+  beforeEach(async () => {
+    const existingUser = new User({
+      email: EXISTING_USER_EMAIL,
+      screenName: 'ExistingUser',
+    });
+
+    await existingUser.save();
+  });
+
+  afterAll(async () => {
+    await mongooseHelpers.disconnect();
+  });
 
   function createResource({
     email = 'niels@test.be',
@@ -116,6 +141,16 @@ describe('POST /api/v1/user/register', () => {
             message: '"screenName" length must be less than or equal to 20 characters long',
           },
         ],
+      });
+    });
+  });
+
+  describe('HTTP 1.1/409 Conflict', () => {
+    test('it returns the status if user for given email already exists', async () => {
+      await act(createResource({ email: EXISTING_USER_EMAIL })).expect(409, {
+        statusCode: 409,
+        error: 'Conflict',
+        message: 'User already exists',
       });
     });
   });
