@@ -1,7 +1,6 @@
 import Boom from '@hapi/boom';
 import Joi from 'joi';
 import crypto from 'crypto';
-import passport from 'passport';
 
 import { RouteRegistration } from '../../../../@types/RouteRegistrationHandler';
 
