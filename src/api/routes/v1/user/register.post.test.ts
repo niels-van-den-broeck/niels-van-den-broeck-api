@@ -5,6 +5,7 @@ import buildApp from '../../../../app';
 type RegisterUserResouce = {
   email: string;
   password: string;
+  screenName: string;
 };
 
 describe('POST /api/v1/user/register', () => {
@@ -13,10 +14,12 @@ describe('POST /api/v1/user/register', () => {
   function createResource({
     email = 'niels@test.be',
     password = 'verysecure001',
+    screenName = 'Niels',
   }: Partial<RegisterUserResouce> = {}): Partial<RegisterUserResouce> {
     return {
       email,
       password,
+      screenName,
     };
   }
 
@@ -75,6 +78,43 @@ describe('POST /api/v1/user/register', () => {
         message: 'Request body is not valid',
         data: [
           { key: 'password', message: 'Password must contain at least 6 characters and 1 number' },
+        ],
+      });
+    });
+
+    test('it returns the status if no screenName is given', async () => {
+      const resource = createResource();
+      delete resource.screenName;
+
+      await act(resource).expect(400, {
+        statusCode: 400,
+        error: 'Bad Request',
+        message: 'Request body is not valid',
+        data: [{ key: 'screenName', message: '"screenName" is required' }],
+      });
+    });
+
+    test('it returns the status if screenName is shorter than 3 characters', async () => {
+      await act(createResource({ screenName: 'ye' })).expect(400, {
+        statusCode: 400,
+        error: 'Bad Request',
+        message: 'Request body is not valid',
+        data: [
+          { key: 'screenName', message: '"screenName" length must be at least 3 characters long' },
+        ],
+      });
+    });
+
+    test('it returns the status if screenName is longer than 20 characters', async () => {
+      await act(createResource({ screenName: 'nielsnielsnielsnielsoops' })).expect(400, {
+        statusCode: 400,
+        error: 'Bad Request',
+        message: 'Request body is not valid',
+        data: [
+          {
+            key: 'screenName',
+            message: '"screenName" length must be less than or equal to 20 characters long',
+          },
         ],
       });
     });

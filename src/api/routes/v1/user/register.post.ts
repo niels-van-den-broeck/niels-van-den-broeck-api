@@ -10,6 +10,7 @@ const validationSchema = Joi.object({
     .pattern(/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$/)
     .message('Password must contain at least 6 characters and 1 number')
     .required(),
+  screenName: Joi.string().min(3).max(20).required(),
 });
 
 const registerRoute: RouteRegistration = (router) => {
