@@ -40,7 +40,7 @@ const registerRoute: RouteRegistration = (router) => {
 
       await user.save();
 
-      res.sendStatus(200);
+      res.sendStatus(201);
     } catch (e) {
       next(e);
     }

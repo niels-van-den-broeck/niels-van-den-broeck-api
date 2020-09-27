@@ -54,14 +54,14 @@ describe('POST /api/v1/user/register', () => {
     return req;
   }
 
-  describe('HTTP 1.1/200 OK', () => {
+  describe('HTTP 1.1/201 Created', () => {
     test('it returns the status', async () => {
-      await act().expect(200);
+      await act().expect(201);
     });
 
     test('it persists the user with a hashed password and a password salt', async () => {
       const resource = createResource() as RegisterUserResouce;
-      await act().expect(200);
+      await act().expect(201);
 
       const user = (await User.findOne({ email: resource.email }).lean().exec()) as UserDocument;
 
