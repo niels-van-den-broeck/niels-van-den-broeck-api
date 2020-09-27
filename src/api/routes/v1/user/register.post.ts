@@ -1,6 +1,7 @@
 import Boom from '@hapi/boom';
 import Joi from 'joi';
 import crypto from 'crypto';
+import passport from 'passport';
 
 import { RouteRegistration } from '../../../../@types/RouteRegistrationHandler';
 
@@ -27,9 +28,7 @@ const registerRoute: RouteRegistration = (router) => {
       if (existingUser) throw Boom.conflict('User already exists');
 
       const passwordSalt = crypto.randomBytes(16).toString('hex');
-      const passwordHash = crypto
-        .pbkdf2Sync(password, passwordSalt, 1000, 64, `sha512`)
-        .toString(`hex`);
+      const passwordHash = User.hashPassword(password, passwordSalt);
 
       const user = new User({
         email,
