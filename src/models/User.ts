@@ -3,16 +3,16 @@ import Mongoose, { Document, MongooseModel } from 'mongoose';
 export type UserType = {
   screenName: string;
   email: string;
-  passwordHex: string;
+  passwordHash: string;
   passwordSalt: string;
 };
 
-type UserDocument = Document & UserType;
+export type UserDocument = Document & UserType;
 
 const UserSchema = new Mongoose.Schema({
   screenName: String,
   email: String,
-  passwordHex: String,
+  passwordHash: String,
   passwordSalt: String,
 });
 

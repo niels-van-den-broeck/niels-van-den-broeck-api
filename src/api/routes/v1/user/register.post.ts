@@ -1,5 +1,6 @@
 import Boom from '@hapi/boom';
 import Joi from 'joi';
+import crypto from 'crypto';
 
 import { RouteRegistration } from '../../../../@types/RouteRegistrationHandler';
 
@@ -19,11 +20,25 @@ const validationSchema = Joi.object({
 const registerRoute: RouteRegistration = (router) => {
   router.post('/user/register', validateRequest(validationSchema), async (req, res, next) => {
     try {
-      const { email } = req.body;
+      const { email, password, screenName } = req.body;
 
       const existingUser = await User.findOne({ email }).lean().exec();
 
       if (existingUser) throw Boom.conflict('User already exists');
+
+      const passwordSalt = crypto.randomBytes(16).toString('hex');
+      const passwordHash = crypto
+        .pbkdf2Sync(password, passwordSalt, 1000, 64, `sha512`)
+        .toString(`hex`);
+
+      const user = new User({
+        email,
+        screenName,
+        passwordSalt,
+        passwordHash,
+      });
+
+      await user.save();
 
       res.sendStatus(200);
     } catch (e) {

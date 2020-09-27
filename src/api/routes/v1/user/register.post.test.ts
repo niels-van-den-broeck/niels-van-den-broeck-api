@@ -1,8 +1,8 @@
 import request from 'supertest';
-
+import crypto from 'crypto';
 import buildApp from '../../../../app';
 import mongooseHelpers from '../../../../helpers/mongoose-helpers';
-import User from '../../../../models/User';
+import User, { UserDocument } from '../../../../models/User';
 
 type RegisterUserResouce = {
   email: string;
@@ -56,7 +56,27 @@ describe('POST /api/v1/user/register', () => {
 
   describe('HTTP 1.1/200 OK', () => {
     test('it returns the status', async () => {
-      await act(createResource()).expect(200);
+      await act().expect(200);
+    });
+
+    test('it persists the user with a hashed password and a password salt', async () => {
+      const resource = createResource() as RegisterUserResouce;
+      await act().expect(200);
+
+      const user = (await User.findOne({ email: resource.email }).lean().exec()) as UserDocument;
+
+      expect(user).toEqual(
+        expect.objectContaining({
+          screenName: resource.screenName,
+          email: resource.email,
+        }),
+      );
+
+      const hash = crypto
+        .pbkdf2Sync(resource.password, user.passwordSalt, 1000, 64, `sha512`)
+        .toString(`hex`);
+
+      expect(user.passwordHash).toBe(hash);
     });
   });
 
